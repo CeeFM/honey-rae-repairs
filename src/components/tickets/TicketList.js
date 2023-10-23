@@ -39,7 +39,7 @@ export const TicketList = () => {
         {
             filteredTickets.map(
                 (ticket) => {
-                    return <section className="ticket">
+                    return <section className="ticket" key={`ticket--${ticket.id}`}>
                         <header>{ticket.description}</header>
                         <footer>Emergency: {ticket.emergency ? "Yes" : "No"}</footer>
                     </section>
