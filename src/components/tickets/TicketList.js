@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react"
 import  "./Tickets.css"
 import { Link, useNavigate } from "react-router-dom"
+import { Ticket } from "./Ticket"
 
 export const TicketList = ({ searchTermState }) => {
     const [tickets, setTickets] = useState([])
+    const [employees, setEmployees] = useState([])
     const [filteredTickets, setFiltered] = useState([])
     const [emergency, setEmergency] = useState(false)
     const [openOnly, updateOpenOnly] = useState(false)
@@ -35,12 +37,22 @@ export const TicketList = ({ searchTermState }) => {
         [emergency]
     )
 
+    const getAllTickets = () => {
+        fetch('http://localhost:8088/serviceTickets?_embed=employeeTickets')
+        .then(response => response.json())
+        .then((ticketArray) => {
+            setTickets(ticketArray)
+        })
+    }
+
     useEffect(
         () => {
-            fetch('http://localhost:8088/serviceTickets')
+            getAllTickets()
+
+            fetch('http://localhost:8088/employees?_expand=user')
                 .then(response => response.json())
-                .then((ticketArray) => {
-                    setTickets(ticketArray)
+                .then((employeeArray) => {
+                    setEmployees(employeeArray)
                 })
         },
         [] // When this array is empty, you are observing initial component state
@@ -93,15 +105,10 @@ export const TicketList = ({ searchTermState }) => {
     <article className="tickets">
         {
             filteredTickets.map(
-                (ticket) => {
-                    return <>
-                        <header>
-                            <Link to={`/tickets/${ticket.id}/edit`}>Ticket {ticket.id}</Link>
-                        </header>
-                        <section>{ticket.description}</section>
-                        <footer>Emergency: {ticket.emergency ? "🧨" : "No"}</footer>
-                        </>
-                }
+                (ticket) => <Ticket employees={employees}
+                getAllTickets = {getAllTickets} 
+                currentUser={honeyUserObject} 
+                ticketObject={ticket} />
             )
         }
     </article>
