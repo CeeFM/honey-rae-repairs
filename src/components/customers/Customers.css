@@ -1,11 +1,11 @@
-.employees {
+.customers {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-evenly;
 }
 
-.employee {
+.customer {
     background-color: hotpink;
     border-color: 2px dotted fuchsia;
     color: black;
@@ -14,7 +14,7 @@
     border-radius: 50px;
 }
 
-.employee:hover {
+.customer:hover {
     box-shadow: 5px 5px black;
 }
 
