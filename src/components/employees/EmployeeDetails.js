@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
+import { getEmployeeDetails } from "../APIManager"
 
 export const EmployeeDetails = () => {
     const {employeeId} = useParams()
@@ -7,8 +8,7 @@ export const EmployeeDetails = () => {
 
     useEffect(
         () => {
-            return fetch(`http://localhost:8088/employees?_expand=user&_embed=employeeTickets&userId=${employeeId}`)
-                .then(response => response.json())
+            getEmployeeDetails(employeeId)
                 .then((data) => {
                     const singleEmployee = data[0]
                     updateEmployee(singleEmployee)
@@ -25,5 +25,5 @@ export const EmployeeDetails = () => {
     <div>Specialty: {employee.specialty}</div>
     <div>Rate: {employee.rate}</div>
     <footer className="employee__footer">Currently working on {employee?.employeeTickets?.length} tickets</footer>
-</section>
+    </section>
 }
